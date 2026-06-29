@@ -1,73 +1,88 @@
-version = "1.0.3"
-name = ChooseTranslationTable({"Disable skill trees", ["zh"] = "禁用技能树", ["zht"] = "禁用技能树"})
-description = ChooseTranslationTable({"You can also disable individual skill tree", ["zh"] = "顾名思义", ["zht"] = "顾名思义"})
+version = "1.1.2"
+name = ChooseTranslationTable({
+    "Disable skill trees",
+    ["zh"] = "Disable skill trees",
+    ["zht"] = "Disable skill trees",
+})
+description = ChooseTranslationTable({
+    "Choose which character skill trees to disable",
+    ["zh"] = "Choose which character skill trees to disable",
+    ["zht"] = "Choose which character skill trees to disable",
+})
 author = "ziwbi"
 api_version = 10
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
-all_clients_require_mod = false
+all_clients_require_mod = true
 client_only_mod = false
 dst_compatible = true
 server_filter_tags = {}
 
-local config_strings = 
+local strings =
 {
-    skilltree   = {en = "Disable specific skill tree",    zh = "禁用特定的技能树"},
-    wathgrithr  = {en = "Disable Wigfird's skill tree",   zh = "禁用薇格弗德的技能树"},
-    willow      = {en = "Disable Willow's skill tree",    zh = "禁用薇洛的技能树"},
-    wilson      = {en = "Disable Wilson's skill tree",    zh = "禁用威尔逊的技能树"},
-    wolfgang    = {en = "Disable Wolfgang's skill tree",  zh = "禁用沃尔夫冈的技能树"},
-    woodie      = {en = "Disable Woodie's skill tree",    zh = "禁用伍迪的技能树"},
-    wormwood    = {en = "Disable Wormwood's skill tree",  zh = "禁用沃姆伍德的技能树"},
-    wurt        = {en = "Disable Wurt's skill tree",      zh = "禁用沃特的技能树"},
-    winona      = {en = "Disable Winona's skill tree",    zh = "禁用薇诺娜的技能树"},
-    wendy       = {en = "Disable Wendy's skill tree",     zh = "禁用温蒂的技能树"},
-    walter      = {en = "Disable Walter's skill tree",    zh = "禁用沃尔特的技能树"},
-    wortox      = {en = "Disable Wortox's skill tree",    zh = "禁用沃拓克斯的技能树"},
-    yes         = {en = "Yes", zh = "是"},
-    no          = {en = "No", zh = "否"}
+    title = {
+        en = "Disable character skill trees",
+        zh = "Disable character skill trees",
+        zht = "Disable character skill trees",
+    },
+    yes = {
+        en = "Yes",
+        zh = "Yes",
+        zht = "Yes",
+    },
+    no = {
+        en = "No",
+        zh = "No",
+        zht = "No",
+    },
 }
 
-local function GetTranslation(tbl)
-    return ChooseTranslationTable({tbl.en, zh = tbl.zh, zht = tbl.zh})
+local characters =
+{
+    {name = "walter",     en = "Walter",     zh = "Walter",     zht = "Walter"},
+    {name = "wathgrithr", en = "Wigfrid",    zh = "Wigfrid",    zht = "Wigfrid"},
+    {name = "wendy",      en = "Wendy",      zh = "Wendy",      zht = "Wendy"},
+    {name = "willow",     en = "Willow",     zh = "Willow",     zht = "Willow"},
+    {name = "wilson",     en = "Wilson",     zh = "Wilson",     zht = "Wilson"},
+    {name = "winona",     en = "Winona",     zh = "Winona",     zht = "Winona"},
+    {name = "wolfgang",   en = "Wolfgang",   zh = "Wolfgang",   zht = "Wolfgang"},
+    {name = "woodie",     en = "Woodie",     zh = "Woodie",     zht = "Woodie"},
+    {name = "wormwood",   en = "Wormwood",   zh = "Wormwood",   zht = "Wormwood"},
+    {name = "wortox",     en = "Wortox",     zh = "Wortox",     zht = "Wortox"},
+    {name = "wurt",       en = "Wurt",       zh = "Wurt",       zht = "Wurt"},
+    {name = "wx78",       en = "WX-78",      zh = "WX-78",      zht = "WX-78"},
+}
+
+local function Translate(value)
+    return ChooseTranslationTable({
+        value.en,
+        zh = value.zh,
+        zht = value.zht,
+    })
 end
 
-local function make_title(title)
-    return {
-        label = GetTranslation(config_strings[title]),
+configuration_options =
+{
+    {
         name = "",
+        label = Translate(strings.title),
         hover = "",
-        options = {{description = "", data = 0}},
-        default = 0
-    }
-end
-
-local function make_option(character)
-    return {
-        name = character,
-        label =  GetTranslation(config_strings[character]),
-        options = 
-        {
-            {description = GetTranslation(config_strings.yes), data = true },
-            {description = GetTranslation(config_strings.no), data = false},
-        },
-        default = true    
-    }
-end
-
-
-configuration_options = 
-{
-    make_title("skilltree"),
-    make_option("wathgrithr"),
-    make_option("willow"),
-    make_option("wilson"),
-    make_option("wolfgang"),
-    make_option("woodie"),
-    make_option("wormwood"),
-    make_option("wurt"),
-    make_option("winona"),
-    make_option("wendy"),
-    make_option("walter"),
-    make_option("wortox"),
+        options = {{description = "", data = false}},
+        default = false,
+    },
 }
+
+for _, character in ipairs(characters) do
+    configuration_options[#configuration_options + 1] =
+    {
+        name = character.name,
+        label = Translate(character),
+        hover = "",
+        options =
+        {
+            {description = Translate(strings.yes), data = true},
+            {description = Translate(strings.no), data = false},
+        },
+        default = true,
+    }
+end
