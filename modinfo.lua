@@ -72,7 +72,8 @@ configuration_options =
     },
 }
 
-for _, character in ipairs(characters) do
+for i = 1, #characters do
+    local character = characters[i]
     configuration_options[#configuration_options + 1] =
     {
         name = character.name,
