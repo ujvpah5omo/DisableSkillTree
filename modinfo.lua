@@ -1,15 +1,15 @@
-version = "1.1.2"
+version = "1.2.0"
 name = ChooseTranslationTable({
     "Disable skill trees",
     ["zh"] = "Disable skill trees",
     ["zht"] = "Disable skill trees",
 })
 description = ChooseTranslationTable({
-    "Choose which character skill trees to disable",
-    ["zh"] = "Choose which character skill trees to disable",
-    ["zht"] = "Choose which character skill trees to disable",
+    "Disable all skill trees by default, with per-character overrides",
+    ["zh"] = "Disable all skill trees by default, with per-character overrides",
+    ["zht"] = "Disable all skill trees by default, with per-character overrides",
 })
-author = "ziwbi"
+author = "Codex"
 api_version = 10
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
@@ -24,6 +24,31 @@ local strings =
         en = "Disable character skill trees",
         zh = "Disable character skill trees",
         zht = "Disable character skill trees",
+    },
+    disable_all = {
+        en = "Disable all skill trees by default",
+        zh = "Disable all skill trees by default",
+        zht = "Disable all skill trees by default",
+    },
+    override_title = {
+        en = "Per-character overrides",
+        zh = "Per-character overrides",
+        zht = "Per-character overrides",
+    },
+    use_default = {
+        en = "Use default",
+        zh = "Use default",
+        zht = "Use default",
+    },
+    disabled = {
+        en = "Disabled",
+        zh = "Disabled",
+        zht = "Disabled",
+    },
+    enabled = {
+        en = "Enabled",
+        zh = "Enabled",
+        zht = "Enabled",
     },
     yes = {
         en = "Yes",
@@ -70,6 +95,24 @@ configuration_options =
         options = {{description = "", data = false}},
         default = false,
     },
+    {
+        name = "disable_all_skilltrees",
+        label = Translate(strings.disable_all),
+        hover = "",
+        options =
+        {
+            {description = Translate(strings.yes), data = true},
+            {description = Translate(strings.no), data = false},
+        },
+        default = true,
+    },
+    {
+        name = "",
+        label = Translate(strings.override_title),
+        hover = "",
+        options = {{description = "", data = false}},
+        default = false,
+    },
 }
 
 for i = 1, #characters do
@@ -81,9 +124,10 @@ for i = 1, #characters do
         hover = "",
         options =
         {
-            {description = Translate(strings.yes), data = true},
-            {description = Translate(strings.no), data = false},
+            {description = Translate(strings.use_default), data = "default"},
+            {description = Translate(strings.disabled), data = "disable"},
+            {description = Translate(strings.enabled), data = "enable"},
         },
-        default = true,
+        default = "default",
     }
 end
